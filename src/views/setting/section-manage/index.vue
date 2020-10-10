@@ -303,7 +303,7 @@ export default {
       height: 300px;
       position: absolute;
       left: 50%;
-      top: 50%;
+      top: 35%;
       transform: translate(-50%, -50%);
       background: #fff;
       .title {

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-name">用户姓名: {{ showName }}</div>
-    <div class="dashboard-name">权限名称: {{ name }}</div>
+    <div class="dashboard-name">用户权限: {{ name }}</div>
     <div class="dashboard-date">当前时间: {{ date | dateFilter }}</div>
   </div>
 </template>

@@ -29,35 +29,29 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="modify-section" v-show="modifySectionShow">
-      <div class="container">
-        <h4 class="title">{{ oparation }}科室</h4>
-        <div class="close" @click="modifySectionCancel('section')">
-          <i class="el-icon-close"></i>
-        </div>
-        <el-form :model="section" ref="section" :rules="sectionRules" label-width="120px" size="small">
-          <el-form-item label="科室编号:" prop="seq_num">
-            <el-input v-model="section.seq_num" :disabled="true" style="width: 500px;"></el-input>
-          </el-form-item>
-          <el-form-item label="科室名称:" prop="name">
-            <el-autocomplete popper-class="my-autocomplete" v-model="section.name" style="width: 500px;"
-              :fetch-suggestions="querySearch" placeholder="请选择科室名称" @select="handleSelect"
-              value-key="name">  
-            </el-autocomplete>
-          </el-form-item>
-          <el-form-item label="是否开通挂号:" prop="can_appoint" required align="left">
-            <el-radio-group v-model="section.can_appoint">
-              <el-radio :label="1">是</el-radio>
-              <el-radio :label="0">否</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <div class="footer">
-            <el-button type="primary" @click="modifySectionConfirm('section')" size="small">确定</el-button>
-            <el-button @click="modifySectionCancel('section')" size="small">取消</el-button>
-          </div>
-        </el-form>
-      </div>
-    </div>
+    <el-dialog :title="oparation + '科室'" :visible.sync="modifySectionShow" :before-close="handleClose" align="center">
+      <el-form :model="section" label-width="120px" size="small">
+        <el-form-item label="科室编号:" prop="seq_num">
+          <el-input v-model="section.seq_num" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="科室名称:" prop="name">
+          <el-autocomplete popper-class="my-autocomplete" v-model="section.name" style="width: 100%;"
+            :fetch-suggestions="querySearch" placeholder="请选择科室名称" @select="handleSelect"
+            value-key="name">  
+          </el-autocomplete>
+        </el-form-item>
+        <el-form-item label="是否开通挂号:" prop="can_appoint" required align="left">
+          <el-radio-group v-model="section.can_appoint">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="modifySectionConfirm('section')" size="small" type="primary">确定</el-button>
+          <el-button @click="modifySectionCancel('section')" size="small">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -79,11 +73,6 @@ export default {
       },
       sections: [],
       sectionNames: AKF001,
-      sectionRules: {
-        name: [
-          { required: true, message: '请输入科室名称', trigger: 'change' }
-        ]
-      },
       action: '', // 记录是新增还是编辑
       index: -1  // 记录编辑的行号
     }
@@ -99,7 +88,8 @@ export default {
     createFilter(queryString) {
       return sectionName => sectionName.value.toLowerCase().includes(queryString.toLowerCase())
     },
-    handleSelect(item) {  // 联想选择事件
+    // 联想选择事件
+    handleSelect(item) {  
       this.section.name = item.value
       this.section.seq_num = item.key
     },
@@ -116,7 +106,12 @@ export default {
       this.modifySectionShow = true
     },
     modifySectionCancel() {
-      this.addOrEditReset('section')
+      this.resetForm()
+    },
+    handleClose() {
+      this.modifySectionShow = false
+      // 重置表单
+      this.resetForm()
     },
     // 创建科室
     createDepartment() {
@@ -127,10 +122,10 @@ export default {
       }).then(res => {
         if (!(typeof res === 'string' && res.includes('ERRORCODE'))) {
           const newSection = res
-          // 更新
+          // 更新科室信息
           this.sections.push(newSection)
           // 重置表单
-          this.addOrEditReset('section')
+          this.resetForm()
           this.$message.success({ message: '科室创建成功!', duration: 1000, showClose: true })
         }
       })
@@ -170,15 +165,16 @@ export default {
           this.sections[this.index].szsbname = this.section.szsbname
           this.sections[this.index].can_appoint = this.section.can_appoint
           // 重置表单
-          this.addOrEditReset('section')
+          this.resetForm()
           this.$message.success({ message: '科室修改成功!', duration: 1000, showClose: true })
         }
       })
     },
     modifySectionConfirm(formName) {
       this.$refs[formName].validate(valid => {
+        // 验证成功的处理
         if (valid) {
-          // 验证成功的处理
+        // 判断是创建还是编辑
           if (this.action === 'new') {
             // 新建科室
             this.createDepartment()
@@ -218,14 +214,19 @@ export default {
         if (!(typeof res === 'string' && res.includes('ERRORCODE'))) {
           this.sections[index].disabled = status
           // 重置表单
-          this.addOrEditReset('section')
+          this.resetForm()
         }
       })
     },
-    addOrEditReset(ruleForm) {
-      // 重置表单
+    resetForm() {
       this.modifySectionShow = false
-      this.$refs[ruleForm].resetFields()
+      this.section = {
+        name: '',
+        seq_num: '',  // 科室编号
+        can_appoint: 1, // 是否开通预约(1表示是)
+        szsbcode: '',
+        szsbname: ''
+      }
     },
     getDepartment() {  // 获取科室
       service(getDeptList, {
@@ -289,43 +290,6 @@ export default {
   .el-table {
     width: 90%;
     margin-top: 20px;
-  }
-  .modify-section {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3001;
-    background: rgba(7, 17, 27, 0.7);
-    .container {
-      width: 700px;
-      height: 300px;
-      position: absolute;
-      left: 50%;
-      top: 35%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      .title {
-        text-align: center;
-        color: #666;
-      }
-      .close {
-        .el-icon-close {
-          position: absolute;
-          right: 25px;
-          top: 20px;
-          font-size: 20px;
-          cursor: pointer;
-        }
-      }
-      .el-form {
-        margin-left: 10px;
-        .footer {
-          text-align: center;
-        }
-      } 
-    }
   }
 }
 </style>

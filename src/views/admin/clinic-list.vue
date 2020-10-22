@@ -155,7 +155,7 @@ export default {
         // 如已经维护，则跳转到挂号
         this.$router.push({ path: '/registration' })
       }
-    },
+    }
   },
   computed: {
     ...mapGetters(['token', 'user'])

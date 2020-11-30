@@ -30,7 +30,7 @@
       </el-table-column>
     </el-table>
     <el-dialog :title="oparation + '科室'" :visible.sync="modifySectionShow" :before-close="handleClose" align="center">
-      <el-form :model="section" label-width="120px" size="small">
+      <el-form :model="section" ref="section" label-width="120px" size="small">
         <el-form-item label="科室编号:" prop="seq_num">
           <el-input v-model="section.seq_num" :disabled="true"></el-input>
         </el-form-item>

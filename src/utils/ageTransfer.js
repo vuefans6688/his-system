@@ -14,10 +14,10 @@ export function calculateFromBirth(birthdate) {
   if (!birthdate) {
     return ''
   }
-  const birthArr = birthdate.split('-')
-  const year = parseInt(birthArr[0], 10)
-  const month = parseInt(birthArr[1], 10)
-  const day = parseInt(birthArr[2], 10)
+  const birthArray = birthdate.split('-')
+  const year = parseInt(birthArray[0], 10)
+  const month = parseInt(birthArray[1], 10)
+  const day = parseInt(birthArray[2], 10)
   let ageYear = new Date().getFullYear() - year
   let ageMonth = new Date().getMonth() + 1 - month
   let ageDay = new Date().getDate() - day

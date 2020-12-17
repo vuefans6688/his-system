@@ -42,15 +42,16 @@ export default {
   },
   methods: {
     getAge() {
-      return this.old.age || 0
+      return this.old.age || null
     },
     getMonthes() {
-      return this.old.month || 0
+      return this.old.month || null
     },
     getBirth() {
       return this.old.birth || new Date()
     },
-    calculateBirth() {  // 根据岁数和月份计算生日
+    // 计算生日
+    calculateBirth() {  
       const date = new Date()
       const year = date.getFullYear() - this.getAge()
       const month = date.getMonth() - this.getMonthes()
@@ -58,23 +59,23 @@ export default {
         month += 12
         year -= 1
       }
-      const birthday = new Date(year, month, date.getDate())
-      this.old.birth = birthday
+      this.old.birth = new Date(year, month, date.getDate())
     },
-    handleBirth() {  // 根据生日计算岁数
+    // 根据生日计算岁数
+    handleBirth() {  
       if (this.getBirth() > new Date()) {
         this.old.birth = ''
         return
       }
       this.old.age = new Date().getFullYear() - this.getBirth().getFullYear()
       this.old.month = new Date().getMonth() - this.getBirth().getMonth()
-      const day = new Date().getDate() - this.getBirth().getDate()
+      const totalDay = new Date().getDate() - this.getBirth().getDate()
       // 获取当前月天数
       const currentYear = parseInt(this.getBirth().getFullYear(), 10)
       const currentMonth = parseInt(this.getBirth().getMonth() + 1, 10)
-      const daysInMonth = getCurrentMonthDays(currentMonth, currentYear)
-      if (day < 0) {
-        day += daysInMonth
+      const currentDay = getCurrentMonthDays(currentMonth, currentYear)
+      if (totalDay < 0) {
+        totalDay += currentDay
         this.old.month -= 1
       }
       if (this.old.month < 0) {
@@ -88,4 +89,6 @@ export default {
   }
 }
 </script>
+
+
 

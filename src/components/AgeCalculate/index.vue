@@ -2,13 +2,13 @@
   <div class="age-calculate">
     <el-form :model="old" size="small">
       <el-form-item prop="age">
-        <el-input placeholder="请输入您的岁数" v-model="old.age" @keyup.native="intLimitAge('age')" @blur="calculateBirth" :maxlength="3"></el-input>
+        <el-input v-model="old.age" @keyup.native="intLimitAge('age')" @blur="calculateBirth" :maxlength="3" placeholder="请输入您的岁数"></el-input>
       </el-form-item>
       <el-form-item prop="month">
-        <el-input placeholder="请输入您的出生月份" v-model="old.month" @keyup.native="intLimitAge('month', 12)" @blur="calculateBirth" :maxlength="2"></el-input>
+        <el-input v-model="old.month" @keyup.native="intLimitAge('month', 12)" @blur="calculateBirth" :maxlength="2" placeholder="请输入您的出生月份"></el-input>
       </el-form-item>
       <el-form-item prop="birth">
-        <el-date-picker style="width: 100%;" placeholder="请选择出生日期" v-model="old.birth" type="date" @change="handleBirth" :editable="false" :clearable="false" :picker-options="pickerOptions"></el-date-picker>
+        <el-date-picker v-model="old.birth" type="date" @change="handleBirth" :editable="false" :clearable="false" :picker-options="pickerOptions" style="width: 100%;" placeholder="请选择出生日期"></el-date-picker>
       </el-form-item>
     </el-form>
   </div>

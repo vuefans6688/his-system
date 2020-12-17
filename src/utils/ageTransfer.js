@@ -1,7 +1,7 @@
-// 计算当前月天数
+// 计算当前月份的天数
 export function getCurrentMonthDays(month, year) {
   let transDays = 30
-  const largeMonth = [1, 3, 5, 7, 8, 10, 12]
+  let largeMonth = [1, 3, 5, 7, 8, 10, 12]
   if (largeMonth.includes(month)) {
     transDays = 31
   } else if (month === 2) {
@@ -10,34 +10,38 @@ export function getCurrentMonthDays(month, year) {
   return transDays
 }
 
-export function calculateFromBirth(birthdate) {
-  if (!birthdate) {
+export function calculateFromBirth(birthDate) {
+  if (!birthDate) {
     return ''
   }
-  const birthArray = birthdate.split('-')
-  const year = parseInt(birthArray[0], 10)
-  const month = parseInt(birthArray[1], 10)
-  const day = parseInt(birthArray[2], 10)
-  let ageYear = new Date().getFullYear() - year
-  let ageMonth = new Date().getMonth() + 1 - month
-  let ageDay = new Date().getDate() - day
+  const birthArray = birthDate.split('-')
+  const birthYear = parseInt(birthArray[0], 10)
+  const birthMonth = parseInt(birthArray[1], 10)
+  const birthDay = parseInt(birthArray[2], 10)
+  const nowYear = new Date().getFullYear() - birthYear
+  const nowMonth = new Date().getMonth() + 1 - birthMonth
+  const nowDay = new Date().getDate() - birthDay
   // 获取当前月天数
-  const currentMonthDays = getCurrentMonthDays(month, year)
-  if (ageDay < 0) {
-    ageMonth -= 1
-    ageDay = currentMonthDays + ageDay
+  const currentMonthDays = getCurrentMonthDays(birthMonth, birthYear)
+  if (nowDay < 0) {
+    nowMonth -= 1
+    nowDay += currentMonthDays
   }
-  if (ageMonth < 0) {
-    ageYear -= 1
-    ageMonth = 12 + ageMonth
+  if (nowMonth < 0) {
+    nowYear -= 1
+    nowMonth += 12
   }
-  if (ageYear > 0) {
-    return `${ageYear}岁`
-  } else if (ageMonth > 0) {
-    return `${ageMonth}月`
+  if (nowYear > 0) {
+    return `${nowYear}岁`
+  } else if (nowMonth > 0) {
+    return `${nowMonth}月`
   }
-  return `${ageDay}天`
+  return `${nowDay}天`
 }
+
+
+
+
 
 
 

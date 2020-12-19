@@ -14,18 +14,21 @@ export function calculateFromBirth(birthDate) {
   if (!birthDate) {
     return ''
   }
-  const birthArray = birthDate.split('-')
-  const birthYear = parseInt(birthArray[0], 10)
-  const birthMonth = parseInt(birthArray[1], 10)
-  const birthDay = parseInt(birthArray[2], 10)
+  // const birthArray = birthDate.split('-')
+  // const birthYear = parseInt(birthArray[0], 10)
+  // const birthMonth = parseInt(birthArray[1], 10)
+  // const birthDay = parseInt(birthArray[2], 10)
+  const birthYear = birthDate.substr(0, 4)
+  const birthMonth = birthDate.substr(5, 2)
+  const birthDay = birthDate.substr(8, 2)
   const nowYear = new Date().getFullYear() - birthYear
   const nowMonth = new Date().getMonth() + 1 - birthMonth
   const nowDay = new Date().getDate() - birthDay
   // 获取当前月天数
-  const currentMonthDays = getCurrentMonthDays(birthMonth, birthYear)
+  const currentDay = getCurrentMonthDays(birthMonth, birthYear)
   if (nowDay < 0) {
     nowMonth -= 1
-    nowDay += currentMonthDays
+    nowDay += currentDay
   }
   if (nowMonth < 0) {
     nowYear -= 1
@@ -38,6 +41,10 @@ export function calculateFromBirth(birthDate) {
   }
   return `${nowDay}天`
 }
+
+
+
+
 
 
 

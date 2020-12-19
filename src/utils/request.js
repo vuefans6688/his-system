@@ -5,24 +5,24 @@ import { getToken } from '@/serve/token'
 import { getClinicId } from '@/serve/clinic-id'
 import { getSheBaoHead } from '@/serve/she-bao-head'
 
-let baseURL = ''  // 基本路径
+// 基本路径
+// let baseURL = ''  
 
 // 请求拦截器
-axios.interceptors.request.use(config => {  
-  return config
-}, error => {
-  return Promise.reject(error)
-})
+axios.interceptors.request.use(
+  config => config, 
+  error => Promise.reject(error)
+)
 
 // 响应拦截器
-axios.interceptors.response.use(response => {  
-  return response
-}, error => {
-  return Promise.resolve(error.response)
-})
+axios.interceptors.response.use(
+  response => response, 
+  error => Promise.resolve(error.response)
+)
 
-const service = (config, data = {}) => {
-  const publicData = {  // 公共数据结构
+function service(config, data = {}) {
+  // 公共数据结构
+  const publicData = {  
     head: {
       accessToken: config.needToken ? getToken() : '',
       lastnotice: 0,
@@ -38,29 +38,34 @@ const service = (config, data = {}) => {
   } else {
     Object.assign(publicData.body, data)
   }
-  const httpConfig = {  // http请求的默认配置对象
+  // http请求的默认配置对象
+  const httpConfig = {  
     method: config.method || 'post',
-    baseURL: config.baseURL ? config.baseURL : baseURL,
+    // baseURL: config.baseURL ? config.baseURL : baseURL,
     url: config.url,
     data: publicData
   }
   return new Promise((resolve, reject) => {
     axios(httpConfig).then(response => {
       const res = response.data
-      if (res.errcode === 0) {  // his接口       
+      // his接口
+      if (res.errcode === 0) {         
         if (!config.baseURL) {
           resolve(res.data)
-        } else if (res.data.transReturnCode === '00000000' || res.data.success) {  // 客户端接口请求成功
+          // 客户端接口请求成功
+        } else if (res.data.transReturnCode === '00000000' || res.data.success) {  
           resolve(res.data)
-        } else {  // 客户端接口请求失败
-          resolve(`ERRORCODE: ${res.data.transReturnCode}`)
+          // 客户端接口请求失败
+        } else {  
+          resolve(`错误码: ${res.data.transReturnCode}`)
           MessageBox.alert(res.data.transReturnMessage, '错误提示', {
             confirmButtonText: '确定',
             callback: () => {}
           })
         }
-      } else {  // 错误码处理
-        resolve(`ERRORCODE: ${res.errcode}`)
+      // 错误码处理
+      } else {  
+        resolve(`错误码: ${res.errcode}`)
         if ((response.config.url === '/service/drug/createstockcheck' && res.errcode === -1) || res.errcode === 24) {
           return
         }

@@ -103,16 +103,17 @@ export default {
       templateType: 0,      // 模板类型
       templateList: [],     // 模板列表
       drugList: [], // 需要保存为模板的数据(西/成药)
-      formDisabled: false     // 传值告知自组件
+      formDisabled: false     // 传值告知子组件
     }
   },
   methods: {
-    handleClose(tag, index) {  // 删除
+    // 删除
+    handleClose(tag, index) {  
       if (!this.patientMsg.registid) {
         return
       }
       let preType = ''
-      // 筛选类别。1西/中成药 2中药 3输液
+      // 筛选类别 1西/中成药 2中药 3输液
       switch (tag) {
         case 1:
           preType = this.patientMsg.westMedPre[index].westMedForm
@@ -141,7 +142,8 @@ export default {
           this.$message({ message: '该处方已退费', type: 'error', showClose: true, duration: 1000 })
           return
       }
-      if (preType.prescript_id) { // 存在则调用删除接口
+      // 存在则调用删除接口
+      if (preType.prescript_id) { 
         this.$confirm('此处方已保存, 确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -170,7 +172,8 @@ export default {
         }
       }
     },
-    addTag(str) {  // 增加tag
+    // 增加tag
+    addTag(str) {  
       if (!this.patientMsg.registid) {
         this.$message({ type: 'warning', message: '请接诊客户', showClose: true, duration: 1000 })
         return
@@ -307,7 +310,8 @@ export default {
           break
       }
     },
-    touchPre(tag, index) {  // 点击tag
+    // 点击tag
+    touchPre(tag, index) {  
       this.patientMsg[tag] = index
     },
     delPre(id, index, type) {  // 删除处方 type 1西/成药 2 中药 3输液
@@ -336,7 +340,8 @@ export default {
         }
       })
     },
-    getMedPrice(drugId, type, index, index2, total) {   // 获取处方价格
+    // 获取处方价格
+    getMedPrice(drugId, type, index, index2, total) {   
       let sum = 0
       const westPreForm = this.patientMsg.westMedPre[this.patientMsg.westPreShow].westMedForm
       const chinaPreForm = this.patientMsg.chinaMedPre[this.patientMsg.chinaPreShow].chinaMedForm
@@ -388,7 +393,8 @@ export default {
         }
       })
     },
-    printWinShow(type) {  // 打印窗口
+    // 打印窗口
+    printWinShow(type) {  
       if (!this.patientMsg.registid) {
         this.$message({ message: '请接诊客户', type: 'error', showClose: true, duration: 1000 })
         return
@@ -404,7 +410,8 @@ export default {
         this.patientMsg.infusionMedPre.forEach(obj => this.presPrint.push(obj.InfusionArr))
       }
     },
-    print() {  // 打印
+    // 打印处方
+    print() {  
       if (!this.presPrint.length) {
         this.$message({ message: '请至少选择一个处方！', type: 'error', showClose: true, duration: 1000 })
         return
@@ -438,7 +445,8 @@ export default {
         })
       }
     },
-    usePlates(type) {  // 调用模板
+    // 调用模板
+    usePlates(type) {  
       if (!this.patientMsg.registid) {
         this.$message({ message: '请接诊客户', type: 'error', showClose: true, duration: 1000 })
         return
@@ -450,7 +458,8 @@ export default {
     cancelCallTemplate() {
       this.usePlateWin = false
     },
-    useWestTemplate(data) {  // 填入西药模板
+    // 填入西药模板
+    useWestTemplate(data) {  
       this.patientMsg.westMedPre[this.patientMsg.westPreShow].westMedForm.drug_list = data.data.drug_list
       this.patientMsg.westMedPre[this.patientMsg.westPreShow].westMedForm.drug_list.forEach((val, index) => {
         val.days += ''
@@ -459,7 +468,8 @@ export default {
         this.getMedPrice(val.drug_id, 2, index)
       })
     },
-    useChinaTemplate(data) {  // 填入中药模板
+    // 填入中药模板
+    useChinaTemplate(data) {  
       this.patientMsg.chinaMedPre[this.patientMsg.chinaPreShow].chinaMedForm.drug_list = data.data.drug_list
       this.patientMsg.chinaMedPre[this.patientMsg.chinaPreShow].chinaMedForm.drug_list.forEach((val, index) => {
         val.dosage += ''
@@ -471,7 +481,8 @@ export default {
       this.patientMsg.chinaMedPre[this.patientMsg.chinaPreShow].chinaMedForm.frequency = data.data.frequency
       this.patientMsg.chinaMedPre[this.patientMsg.chinaPreShow].chinaMedForm.taking_note = data.data.taking_note
     },
-    useInfusionTemplate(data) {  // 填入输液模板
+    // 填入输液模板
+    useInfusionTemplate(data) {  
       const groupArr = []
       this.patientMsg.infusionMedPre[this.patientMsg.infusionPreShow].infusionMedForm.drug_list = data.data.drug_list
       data.data.drug_list.forEach(val => groupArr.push(val.group_index_str))  // 找出组号

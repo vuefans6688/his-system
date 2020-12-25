@@ -313,7 +313,7 @@ export default {
     },
     reportStatusFilter(row) {
       if (row.report_status === 0) {
-        return '<span>未出</span>'
+        return '未出'
       } else if (row.report_status === row.barcode_array.length) {
         return '已全出'
       } else {

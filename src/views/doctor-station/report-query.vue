@@ -320,9 +320,9 @@ export default {
         return '部分出'
       }
     },
-    clinicDateFilter(str) {
-      const dateStr = str + ''
-      return '20' + dateStr.substr(0, 2) + '-' + dateStr.substr(2, 2) + '-' + dateStr.substr(4, 2)
+    clinicDateFilter(date) {
+      date = date.toString()
+      return '20' + date.substr(0, 2) + '-' + date.substr(2, 2) + '-' + date.substr(4, 2)
     }
   },
   created() {

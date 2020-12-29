@@ -171,7 +171,8 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: 30px auto;
-  width: 1000px;
+  padding-left: 50px;
+  width: 70%;
   .clinic {
     margin: 20px;
     width: 160px;

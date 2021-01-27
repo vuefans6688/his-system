@@ -5,7 +5,7 @@ export function getCurrentMonthDays(month, year) {
   if (largeMonth.includes(month)) {
     transDays = 31
   } else if (month === 2) {
-    transDays = year % 2 === 0 && year % 100 !== 0 || year % 400 === 0 ? 29 : 28
+    transDays = year % 4 === 0 && year % 100 !== 0 || year % 400 === 0 ? 29 : 28
   }
   return transDays
 }

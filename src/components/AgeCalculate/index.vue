@@ -23,7 +23,10 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           const date = new Date()
-          return time.getTime() > new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
+          const year = date.getFullYear()
+          const month = date.getMonth()
+          const day = date.getDate()
+          return time.getTime() > new Date(year, month, day).getTime()
         }
       }
     }

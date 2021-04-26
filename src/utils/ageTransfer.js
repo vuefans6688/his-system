@@ -1,13 +1,13 @@
 // 计算当前月份的天数
 export function getCurrentMonthDays(month, year) {
-  let transDays = 30
   let largeMonth = [1, 3, 5, 7, 8, 10, 12]
   if (largeMonth.includes(month)) {
-    transDays = 31
+    return 31
   } else if (month === 2) {
-    transDays = year % 4 === 0 && year % 100 !== 0 || year % 400 === 0 ? 29 : 28
+    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0 ? 29 : 28
+  } else {
+    return 30
   }
-  return transDays
 }
 
 export function calculateFromBirth(birthDate) {
@@ -18,6 +18,7 @@ export function calculateFromBirth(birthDate) {
   // const birthYear = parseInt(birthArray[0], 10)
   // const birthMonth = parseInt(birthArray[1], 10)
   // const birthDay = parseInt(birthArray[2], 10)
+  
   const birthYear = birthDate.substr(0, 4)
   const birthMonth = birthDate.substr(5, 2)
   const birthDay = birthDate.substr(8, 2)
